@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     }
     public void EnterBTNonClick(){
         //Toast.makeText(getApplicationContext(),"Hello world",Toast.LENGTH_SHORT).show();
-        Intent i = new Intent(getBaseContext(), MainActivity2.class);
+        Intent i = new Intent(getBaseContext(), HotLineGame.class);
         startActivity(i);
     }
 }

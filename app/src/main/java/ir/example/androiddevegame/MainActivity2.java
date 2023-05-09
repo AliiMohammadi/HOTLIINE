@@ -5,12 +5,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class MainActivity2 extends AppCompatActivity {
     private Button increasbutton;
     private TextView textView;
     public int EXACTnumber = 0;
+
+    private ImageView packmanimage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -18,6 +21,8 @@ public class MainActivity2 extends AppCompatActivity {
 
         increasbutton = (Button) findViewById(R.id.button);
         textView = (TextView) findViewById(R.id.ExactnumberText) ;
+        packmanimage = (ImageView)findViewById(R.id.packman) ;
+
         addListenerOnButton();
     }
     public void addListenerOnButton() {
@@ -32,5 +37,7 @@ public class MainActivity2 extends AppCompatActivity {
     public void IncreasBTNonClick(){
         EXACTnumber++;
         textView.setText(Integer.toString(EXACTnumber));
+        packmanimage.setY(packmanimage.getY()+EXACTnumber);
+        packmanimage.setRotation(packmanimage.getRotation() + EXACTnumber);
     }
 }
