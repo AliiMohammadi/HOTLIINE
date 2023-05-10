@@ -3,6 +3,7 @@ package ir.example.androiddevegame;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Point;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
@@ -15,12 +16,12 @@ import java.util.TimerTask;
 
 public class HotLineGame extends AppCompatActivity
 {
-    public ImageView BattleFiledAreaIMG;
+
     private Timer timer;
 
-    private float lastTouchX, lastTouchY;
+    public float lastTouchX, lastTouchY;
     private float rotationAngle = 0;
-
+    public ImageView BattleGroundIMG;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,8 +31,7 @@ public class HotLineGame extends AppCompatActivity
 
     private void Start(){
         TheGuyScript.TheGuyIMG = (ImageView) findViewById(R.id.TheGuyIMG);
-        BattleFiledAreaIMG = (ImageView) findViewById(R.id.BattleFiledAreaIMG);
-
+        //NOTE: The Guy image should be as big as screen cuz it depends on touch area!!
         TheGuyScript.TheGuyIMG.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {

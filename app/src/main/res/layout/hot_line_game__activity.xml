@@ -8,13 +8,14 @@
 
     <ImageView
         android:id="@+id/TheGuyIMG"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:src="@drawable/packman"
+        android:layout_width="300dp"
+        android:layout_height="600dp"
+        android:src="@drawable/the_guy_sprite"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.454"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.545" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
