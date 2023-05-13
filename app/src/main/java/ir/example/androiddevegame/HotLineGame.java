@@ -2,6 +2,8 @@ package ir.example.androiddevegame;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.graphics.Point;
 import android.media.Image;
 import android.os.Bundle;
@@ -21,11 +23,21 @@ import java.util.TimerTask;
 
 public class HotLineGame extends AppCompatActivity
 {
+    //TODO:
+    // Make enemies death animation.
+    // Make the Guy death animation.
+    // Make a game over dialog.
+    // Creat auto respown enemies system and score plans.
+    // Make a Shout gun animation.
+    // Build the level and back ground.
+    // Creat sound and music system or game.
+
     private ImageView bottle1;
     private ImageView bottle2;
     private ImageView bottle3;
-
     private ImageView projectile;
+    private ImageView mob1;
+
     private Button FierBTN;
     private Timer timer;
     @Override
@@ -42,6 +54,9 @@ public class HotLineGame extends AppCompatActivity
         bottle1 = (ImageView) findViewById(R.id.bottle1);
         bottle2 = (ImageView) findViewById(R.id.bottle2);
         bottle3 = (ImageView) findViewById(R.id.bottle3);
+
+        mob1 = (ImageView) findViewById(R.id.mob1);
+
         projectile = (ImageView) findViewById(R.id.projectile);
 
         projectile.setVisibility(View.INVISIBLE);
@@ -50,7 +65,8 @@ public class HotLineGame extends AppCompatActivity
         DebugText.Text = (TextView) findViewById(R.id.debugtext);
         FierBTN.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                FierWeapon();
+                if(TheGuyScript.Alive)
+                    FierWeapon();
             }
         });
 
@@ -72,15 +88,9 @@ public class HotLineGame extends AppCompatActivity
 
                         Point p1 = new Point((int) event.getX(), (int) event.getY());
 
-                        TheGuyScript.TheGuyIMG.setRotation(MathF.LookAt(p1,Input.LastTouchPoint));
+                        if(TheGuyScript.Alive)
+                            TheGuyScript.TheGuyIMG.setRotation(MathF.LookAt(p1,Input.LastTouchPoint));
 
-                        int Dirx = (int) (MathF.cos(TheGuyScript.GetAimAngle()) * 10);
-                        int Diry = (int) -(MathF.sin(TheGuyScript.GetAimAngle()) * 10);
-
-                        DebugText.ShowTextDebug("Player: " + String.valueOf(TheGuyScript.GetAimAngle() + " .Direction: " + String.valueOf(Dirx) + "," + String.valueOf(Diry)));
-                        //DebugText.setText("Player: " + String.valueOf(TheGuyScript.GetAimAngle()));
-                        //ShowTextDebug(String.format("%2f",((TheGuyScript.TheGuyIMG.getRotation() + 270)%360)));
-                        //ShowTextDebug(String.format("%2f",MathF.AngleOfTwoPoints(new Point((int) bottle1.getX(),(int)bottle1.getY()),new Point((int)TheGuyScript.TheGuyIMG.getX(),(int)TheGuyScript.TheGuyIMG.getY()))));
                         break;
                     default:
                         return false;
@@ -113,6 +123,10 @@ public class HotLineGame extends AppCompatActivity
         projectile.setX(aculX);
         projectile.setY(actulY);
     }
+    private void ResetMob(ImageView mob){
+        mob1.setRotation(MathF.LookAt2(mob,TheGuyScript.TheGuyIMG));
+    }
+    int cyclecounter = 0;
     private class EngineLoop extends TimerTask {
         @Override
         public void run() {
@@ -120,11 +134,19 @@ public class HotLineGame extends AppCompatActivity
 
             //Bullet script
             if(projectile.getVisibility() == View.VISIBLE){
-
                 CalculateVelocityOfProjectile();
                 CheckAllObjectCollitions();
             }
+            //mobs
+            //First initial cycle for load.
+            if(cyclecounter < 10){
+                cyclecounter++;
+                return;
+            }
+            MoveTowardTo(mob1,TheGuyScript.TheGuyIMG , 0.3f);
 
+            if(Physics.IsColiding(mob1,TheGuyScript.TheGuyIMG,70,70))
+                TheGuyScript.Alive = false;
         }
     }
     private void CalculateVelocityOfProjectile(){
@@ -162,6 +184,69 @@ public class HotLineGame extends AppCompatActivity
         if(Physics.IsColiding(object,projectile)){
             GameObject.GoOut(object);
         }
+    }
+    private void MoveTowardTo(ImageView imagetomove , ImageView imagetarget , float speed){
+
+        Point p1 = new Point((int) (imagetomove.getX() + (imagetomove.getWidth() / 2)), (int) (imagetomove.getY() + (imagetomove.getHeight() / 2)));
+        Point p2 = new Point((int) (imagetarget.getX() + (imagetarget.getWidth() / 2)), (int) (imagetarget.getY() + (imagetarget.getHeight() / 2)));
+
+
+        float x = (p2.x - p1.x);
+        float y = (p2.y - p1.y);
+
+
+        imagetomove.setX(imagetomove.getX() + x * speed / 100);
+        imagetomove.setY( imagetomove.getY() + y * speed / 100);
+
+
+        /*
+        float velocity = 1;
+
+        float startx = imagetomove.getX();
+        float starty = imagetomove.getY();
+        float endx = imagetarget.getX();
+        float endy = imagetarget.getY();
+
+        float distancex = endx - startx;
+        float distancey = endy - starty;
+
+        double distance = Math.sqrt(Math.pow(distancex,2) + Math.pow(distancey,2));
+
+        float directionx = (float) (distancex/distance);
+        float directiony = (float) (distancey/distance);
+
+        imagetomove.setX(imagetomove.getX() + directionx);
+        imagetomove.setY(imagetomove.getY() + directiony);
+
+         */
+
+    }
+
+    public void moveImageView(ImageView imageViewToMove, ImageView imageViewTarget) {
+        // Get the current position of the image view to move
+        float startX = imageViewToMove.getX();
+        float startY = imageViewToMove.getY();
+
+        // Get the target position of the image view to move
+        float endX = imageViewTarget.getX();
+        float endY = imageViewTarget.getY();
+
+        // Calculate the distance between the two image views
+        float distanceX = endX - startX;
+        float distanceY = endY - startY;
+
+        // Calculate the angle between the two image views
+        double angleRadians = Math.atan2(distanceY, distanceX);
+        double angleDegrees = Math.toDegrees(angleRadians);
+
+        // Rotate and move the image view to its new position
+        imageViewToMove.setRotation((float) angleDegrees);
+        ObjectAnimator animatorX = ObjectAnimator.ofFloat(imageViewToMove, "x", endX);
+        ObjectAnimator animatorY = ObjectAnimator.ofFloat(imageViewToMove, "y", endY);
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.playTogether(animatorX, animatorY);
+        animatorSet.setDuration(1000);
+        animatorSet.start();
     }
 
 }

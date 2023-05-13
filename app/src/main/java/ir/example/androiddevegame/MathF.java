@@ -1,16 +1,32 @@
 package ir.example.androiddevegame;
 
 import android.graphics.Point;
+import android.widget.ImageView;
 
 public class MathF {
     private static float rotationAngle;
 
+    public static float Distnce(float x1 , float y1, float x2 , float y2){
+
+        return (float) Math.sqrt(Math.pow(x2-x1,2) + Math.pow(y2-y1,2));
+    }
     public static float LookAt(Point p1 , Point p2){
             float dx = p1.x - p2.x;
             float dy = p1.y - p2.y;
             rotationAngle += (Math.atan2(dy, dx) * 180 / Math.PI)%360;
             return rotationAngle;
-        }
+    }
+    public static float LookAt2(ImageView im1, ImageView im2){
+        float x1 = im1.getX() + im1.getWidth() /2;
+        float y1 = im1.getY() + im1.getHeight() /2;
+        float x2 = im2.getX() + im2.getWidth() /2;
+        float y2 = im2.getY() + im2.getHeight() /2;
+
+        double anglerad = Math.atan2(y2-y1,x2-x1);
+
+        return (float) Math.toDegrees(anglerad);
+
+    }
     public static float AngleOfTwoPoints (Point p1 , Point p2){
         //double distance = Math.sqrt(Math.pow(p2.x-p1.x,2) + Math.pow(p2.y-p1.y,2));
         double angleradians = Math.atan((p2.y - p1.y) / (p2.x - p1.x));
