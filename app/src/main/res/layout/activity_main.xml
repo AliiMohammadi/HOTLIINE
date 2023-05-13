@@ -21,10 +21,10 @@
         app:layout_constraintVertical_bias="0.057" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/debugtext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=" اپلیکیشن دانشگاه ازاد اسلامی واحد تهران مرکز"
+        android:text=""
         android:textColor="@color/black"
         android:textSize="23sp"
         android:textAlignment="center"
