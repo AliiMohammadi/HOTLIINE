@@ -37,6 +37,10 @@ public class HotLineGame extends AppCompatActivity
     private ImageView bottle3;
     private ImageView projectile;
     private ImageView mob1;
+    private ImageView mob2;
+    private ImageView mob3;
+    private ImageView mob4;
+    private ImageView mob5;
 
     private Button FierBTN;
     private Timer timer;
@@ -56,6 +60,16 @@ public class HotLineGame extends AppCompatActivity
         bottle3 = (ImageView) findViewById(R.id.bottle3);
 
         mob1 = (ImageView) findViewById(R.id.mob1);
+        mob2 = (ImageView) findViewById(R.id.mob2);
+        mob3 = (ImageView) findViewById(R.id.mob3);
+        mob4 = (ImageView) findViewById(R.id.mob4);
+        mob5 = (ImageView) findViewById(R.id.mob5);
+
+        GameObject.GoRandomPlace(mob1);
+        GameObject.GoRandomPlace(mob2);
+        GameObject.GoRandomPlace(mob3);
+        GameObject.GoRandomPlace(mob4);
+        GameObject.GoRandomPlace(mob5);
 
         projectile = (ImageView) findViewById(R.id.projectile);
 
@@ -72,9 +86,11 @@ public class HotLineGame extends AppCompatActivity
 
         //NOTE: The Guy image should be as big as screen cuz it depends on touch area!!
         StartLookingAtTouch();
+        ResetMob(mob1);
 
         timer = new Timer();
         timer.schedule(new EngineLoop(), 0, 10); // delay of 1 second
+
     }
     private void StartLookingAtTouch(){
         TheGuyScript.TheGuyIMG.setOnTouchListener(new View.OnTouchListener() {
@@ -115,8 +131,8 @@ public class HotLineGame extends AppCompatActivity
 
     }
     private void ResetTheProjectile(){
-        float aculX = TheGuyScript.TheGuyIMG.getX() + (TheGuyScript.TheGuyIMG.getWidth() / 2) - 50;
-        float actulY = TheGuyScript.TheGuyIMG.getY() + (TheGuyScript.TheGuyIMG.getHeight() / 2) - 50;
+        float aculX = TheGuyScript.TheGuyIMG.getX() + (TheGuyScript.TheGuyIMG.getWidth() / 2) - 20;
+        float actulY = TheGuyScript.TheGuyIMG.getY() + (TheGuyScript.TheGuyIMG.getHeight() / 2) - 20;
 
         projectile.setVisibility(View.VISIBLE);
 
@@ -124,7 +140,8 @@ public class HotLineGame extends AppCompatActivity
         projectile.setY(actulY);
     }
     private void ResetMob(ImageView mob){
-        mob1.setRotation(MathF.LookAt2(mob,TheGuyScript.TheGuyIMG));
+        mob1.setX(100);
+        mob1.setY(-100);
     }
     int cyclecounter = 0;
     private class EngineLoop extends TimerTask {
@@ -143,10 +160,13 @@ public class HotLineGame extends AppCompatActivity
                 cyclecounter++;
                 return;
             }
-            MoveTowardTo(mob1,TheGuyScript.TheGuyIMG , 0.3f);
 
-            if(Physics.IsColiding(mob1,TheGuyScript.TheGuyIMG,70,70))
-                TheGuyScript.Alive = false;
+            KillTheGuy(mob1);
+            KillTheGuy(mob2);
+            KillTheGuy(mob3);
+            KillTheGuy(mob4);
+            KillTheGuy(mob5);
+
         }
     }
     private void CalculateVelocityOfProjectile(){
@@ -178,12 +198,31 @@ public class HotLineGame extends AppCompatActivity
         CheckShoot(bottle1,projectile);
         CheckShoot(bottle2,projectile);
         CheckShoot(bottle3,projectile);
+
+        CheckShoot(mob1,projectile , true);
+        CheckShoot(mob2,projectile , true);
+        CheckShoot(mob3,projectile , true);
+        CheckShoot(mob4,projectile , true);
+        CheckShoot(mob5,projectile , true);
     }
     private void CheckShoot(ImageView object, ImageView projectile){
 
         if(Physics.IsColiding(object,projectile)){
             GameObject.GoOut(object);
         }
+    }
+    private void CheckShoot(ImageView object, ImageView projectile , boolean RandomLocation){
+
+        if(Physics.IsColiding(object,projectile)){
+            GameObject.GoRandomPlace(object);
+        }
+    }
+    private void KillTheGuy(ImageView mob){
+        mob.setRotation(MathF.LookAt2(mob,TheGuyScript.TheGuyIMG));
+        MoveTowardTo(mob,TheGuyScript.TheGuyIMG , 0.3f);
+
+        if(Physics.IsColiding(mob,TheGuyScript.TheGuyIMG,70,70))
+            TheGuyScript.Alive = false;
     }
     private void MoveTowardTo(ImageView imagetomove , ImageView imagetarget , float speed){
 
