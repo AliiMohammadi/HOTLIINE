@@ -24,13 +24,11 @@ import java.util.TimerTask;
 public class HotLineGame extends AppCompatActivity
 {
     //TODO:
-    // Make enemies death animation.
     // Make the Guy death animation.
     // Make a game over dialog.
-    // Creat auto respown enemies system and score plans.
     // Make a Shout gun animation.
     // Build the level and back ground.
-    // Creat sound and music system or game.
+    // Create sound and music system for game.
 
     private ImageView bottle1;
     private ImageView bottle2;
@@ -42,8 +40,18 @@ public class HotLineGame extends AppCompatActivity
     private ImageView mob4;
     private ImageView mob5;
 
+    private ImageView deadmob1;
+    private ImageView deadmob2;
+    private ImageView deadmob3;
+    private ImageView deadmob4;
+    private ImageView deadmob5;
+    private ImageView deadmob6;
+    private ImageView deadmob7;
+
     private Button FierBTN;
     private Timer timer;
+
+    private int Kills = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +79,22 @@ public class HotLineGame extends AppCompatActivity
         GameObject.GoRandomPlace(mob4);
         GameObject.GoRandomPlace(mob5);
 
+        deadmob1 = (ImageView) findViewById(R.id.mobdead1);
+        deadmob2 = (ImageView) findViewById(R.id.mobdead2);
+        deadmob3 = (ImageView) findViewById(R.id.mobdead3);
+        deadmob4 = (ImageView) findViewById(R.id.mobdead4);
+        deadmob5 = (ImageView) findViewById(R.id.mobdead5);
+        deadmob6 = (ImageView) findViewById(R.id.mobdead5);
+        deadmob7 = (ImageView) findViewById(R.id.mobdead5);
+
+        GameObject.GoOut(deadmob1);
+        GameObject.GoOut(deadmob2);
+        GameObject.GoOut(deadmob3);
+        GameObject.GoOut(deadmob4);
+        GameObject.GoOut(deadmob5);
+        GameObject.GoOut(deadmob6);
+        GameObject.GoOut(deadmob7);
+
         projectile = (ImageView) findViewById(R.id.projectile);
 
         projectile.setVisibility(View.INVISIBLE);
@@ -87,6 +111,9 @@ public class HotLineGame extends AppCompatActivity
         //NOTE: The Guy image should be as big as screen cuz it depends on touch area!!
         StartLookingAtTouch();
         ResetMob(mob1);
+
+        DebugText.ShowTextDebug(String.valueOf(Kills) + " KILLS");
+
 
         timer = new Timer();
         timer.schedule(new EngineLoop(), 0, 10); // delay of 1 second
@@ -128,6 +155,7 @@ public class HotLineGame extends AppCompatActivity
          */
 
         ResetTheProjectile();
+        DebugText.ShowTextDebug(String.valueOf(Kills) + " KILLS");
 
     }
     private void ResetTheProjectile(){
@@ -171,7 +199,7 @@ public class HotLineGame extends AppCompatActivity
     }
     private void CalculateVelocityOfProjectile(){
 
-        int velocity = 100;
+        int velocity = 60;
         int PlayGround = 1400;
 
         //if bulltet went out of screen, then stop moving.
@@ -211,18 +239,66 @@ public class HotLineGame extends AppCompatActivity
             GameObject.GoOut(object);
         }
     }
+    int deadbodytuern = 1;
     private void CheckShoot(ImageView object, ImageView projectile , boolean RandomLocation){
 
         if(Physics.IsColiding(object,projectile)){
-            GameObject.GoRandomPlace(object);
+
+            switch (deadbodytuern){
+                case 1:
+                    SwapDeadBody(deadmob1,object);
+                    deadbodytuern++;
+                    break;
+                case 2:
+                    SwapDeadBody(deadmob2,object);
+                    deadbodytuern++;
+                    break;
+                case 3:
+                    SwapDeadBody(deadmob3,object);
+                    deadbodytuern++;
+                    break;
+                case 4:
+                    SwapDeadBody(deadmob4,object);
+                    deadbodytuern++;
+                    break;
+                case 5:
+                    SwapDeadBody(deadmob5,object);
+                    deadbodytuern ++;
+                    break;
+                case 6:
+                    SwapDeadBody(deadmob6,object);
+                    deadbodytuern ++;
+                    break;
+                case 7:
+                    SwapDeadBody(deadmob7,object);
+                    deadbodytuern = 1;
+                    break;
+                default:
+                    break;
+            }
+
+            Kills++;
+            GameObject.GoRandomPlace(object); //Kill comformed.
         }
+    }
+
+    private void SwapDeadBody(ImageView deadbody ,ImageView object ){
+        deadbody.setX(object.getX());
+        deadbody.setY(object.getY());
+        deadbody.setRotation(MathF.LookAt2(deadbody,TheGuyScript.TheGuyIMG));
     }
     private void KillTheGuy(ImageView mob){
         mob.setRotation(MathF.LookAt2(mob,TheGuyScript.TheGuyIMG));
-        MoveTowardTo(mob,TheGuyScript.TheGuyIMG , 0.3f);
 
-        if(Physics.IsColiding(mob,TheGuyScript.TheGuyIMG,70,70))
-            TheGuyScript.Alive = false;
+        float Speed = 0.3f + Kills / 50;
+
+        MoveTowardTo(mob,TheGuyScript.TheGuyIMG , Speed);
+
+        if(Physics.IsColiding(mob,TheGuyScript.TheGuyIMG,70,70)){
+            TheGuyScript.Die();
+
+            ((ImageView)findViewById(R.id.TheGuyIMG)).setImageResource(R.drawable.theguydead);
+        }
     }
     private void MoveTowardTo(ImageView imagetomove , ImageView imagetarget , float speed){
 

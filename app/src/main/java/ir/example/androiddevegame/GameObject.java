@@ -28,7 +28,7 @@ public class GameObject {
         int maxY = 9000;
 
         int minX = -1500;
-        int maxX = 3500;
+        int maxX = 3000;
 
         int random_intY = (int)Math.floor(Math.random() * (maxY - minY + 1) + minY);
         int random_intX = ((int)Math.floor(Math.random() * (maxX - minX + 1) + minX));
