@@ -173,6 +173,18 @@
         app:layout_constraintVertical_bias="0.496" />
 
     <ImageView
+        android:id="@+id/deadtheguuy"
+        android:layout_width="300dp"
+        android:layout_height="600dp"
+        android:src="@drawable/theguydead"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.801"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.946" />
+
+    <ImageView
         android:id="@+id/mob1"
         android:layout_width="85dp"
         android:layout_height="85dp"

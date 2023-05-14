@@ -8,6 +8,7 @@ import android.widget.ImageView;
 public class TheGuyScript {
     public static boolean Alive = true;
     public static ImageView TheGuyIMG;
+    public static ImageView DeadTheGuyIMG;
 
     public static int GetAimAngle(){
         return (int) Math.abs((TheGuyIMG.getRotation()) % 360);

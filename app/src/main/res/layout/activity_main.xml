@@ -10,73 +10,30 @@
 
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="700px"
-        android:src="@drawable/azad_university_logo"
+        android:id="@+id/level"
+        android:layout_width="65mm"
+        android:layout_height="1000dp"
+        android:src="@drawable/level"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.057" />
-
-    <TextView
-        android:id="@+id/debugtext"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:textColor="@color/black"
-        android:textSize="23sp"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.732"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:layout_width="900px"
-        android:layout_height="150px"
-        android:background="@color/Lightgray"
-        android:text="نام کاربری"
-        android:textAlignment="center"
-        android:textSize="80px"
-        android:textColor="@color/gray"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.603" />
-
-    <EditText
-        android:layout_width="900px"
-        android:layout_height="150px"
-        android:background="@color/Lightgray"
-        android:text="رمزعبور"
-        android:textAlignment="center"
-        android:textColor="@color/gray"
-        android:textSize="80px"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.701" />
-
-        <Button
+    <Button
         android:id="@+id/button"
         android:layout_width="300dp"
         android:layout_height="75dp"
         android:layout_marginStart="56dp"
         android:layout_marginTop="68dp"
         android:onClick="OnClickEnterBTN"
-        android:text="ورود به اموزشیار"
+        android:text="PLAY HOTLINE"
         android:textSize="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.943"
-        />
+        app:layout_constraintVertical_bias="0.675" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

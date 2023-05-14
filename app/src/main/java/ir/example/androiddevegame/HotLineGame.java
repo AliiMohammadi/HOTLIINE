@@ -24,10 +24,7 @@ import java.util.TimerTask;
 public class HotLineGame extends AppCompatActivity
 {
     //TODO:
-    // Make the Guy death animation.
-    // Make a game over dialog.
     // Make a Shout gun animation.
-    // Build the level and back ground.
     // Create sound and music system for game.
 
     private ImageView bottle1;
@@ -62,6 +59,9 @@ public class HotLineGame extends AppCompatActivity
     private void Start(){
 
         TheGuyScript.TheGuyIMG = (ImageView) findViewById(R.id.TheGuyIMG);
+        TheGuyScript.DeadTheGuyIMG = (ImageView) findViewById(R.id.deadtheguuy);
+
+        GameObject.GoOut(TheGuyScript.DeadTheGuyIMG);
 
         bottle1 = (ImageView) findViewById(R.id.bottle1);
         bottle2 = (ImageView) findViewById(R.id.bottle2);
@@ -188,13 +188,7 @@ public class HotLineGame extends AppCompatActivity
                 cyclecounter++;
                 return;
             }
-
-            KillTheGuy(mob1);
-            KillTheGuy(mob2);
-            KillTheGuy(mob3);
-            KillTheGuy(mob4);
-            KillTheGuy(mob5);
-
+            MakeMobsKillTheGuy();
         }
     }
     private void CalculateVelocityOfProjectile(){
@@ -233,6 +227,13 @@ public class HotLineGame extends AppCompatActivity
         CheckShoot(mob4,projectile , true);
         CheckShoot(mob5,projectile , true);
     }
+    private  void MakeMobsKillTheGuy(){
+        KillTheGuy(mob1);
+        KillTheGuy(mob2);
+        KillTheGuy(mob3);
+        KillTheGuy(mob4);
+        KillTheGuy(mob5);
+    }
     private void CheckShoot(ImageView object, ImageView projectile){
 
         if(Physics.IsColiding(object,projectile)){
@@ -242,7 +243,7 @@ public class HotLineGame extends AppCompatActivity
     int deadbodytuern = 1;
     private void CheckShoot(ImageView object, ImageView projectile , boolean RandomLocation){
 
-        if(Physics.IsColiding(object,projectile)){
+        if(Physics.IsColiding(object,projectile , 20,20)){
 
             switch (deadbodytuern){
                 case 1:
@@ -288,16 +289,22 @@ public class HotLineGame extends AppCompatActivity
         deadbody.setRotation(MathF.LookAt2(deadbody,TheGuyScript.TheGuyIMG));
     }
     private void KillTheGuy(ImageView mob){
+        if(!TheGuyScript.Alive)
+            return;
+
         mob.setRotation(MathF.LookAt2(mob,TheGuyScript.TheGuyIMG));
 
         float Speed = 0.3f + Kills / 50;
 
         MoveTowardTo(mob,TheGuyScript.TheGuyIMG , Speed);
 
-        if(Physics.IsColiding(mob,TheGuyScript.TheGuyIMG,70,70)){
+        if(Physics.IsColiding(mob,TheGuyScript.TheGuyIMG,100,100)){
             TheGuyScript.Die();
+            TheGuyScript.DeadTheGuyIMG.setX(TheGuyScript.TheGuyIMG.getX());
+            TheGuyScript.DeadTheGuyIMG.setY(TheGuyScript.TheGuyIMG.getY());
+            GameObject.GoOut(TheGuyScript.TheGuyIMG);
 
-            ((ImageView)findViewById(R.id.TheGuyIMG)).setImageResource(R.drawable.theguydead);
+            //((ImageView)findViewById(R.id.TheGuyIMG)).setImageResource(R.drawable.theguydead);
         }
     }
     private void MoveTowardTo(ImageView imagetomove , ImageView imagetarget , float speed){
